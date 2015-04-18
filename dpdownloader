@@ -1,0 +1,76 @@
+#!/usr/bin/env python2
+# -*- coding: utf-8 -*-
+#
+# ***INSTRUÇÕES***
+# 
+# --Instalar as bibliotecas antes:
+#   sudo pip2 install HTMLParser requests
+#
+# --Uso:
+#   dpdownloader [http://dontpad.com/][PASTA/]ARQUIVO
+#
+#  Copyright 2015 Jordy Ferreira <jordy@alu.ufc.br>
+#  
+#  This program is free software; you can redistribute it and/or modify
+#  it under the terms of the GNU General Public License as published by
+#  the Free Software Foundation; either version 2 of the License, or
+#  (at your option) any later version.
+#  
+#  This program is distributed in the hope that it will be useful,
+#  but WITHOUT ANY WARRANTY; without even the implied warranty of
+#  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#  GNU General Public License for more details.
+#  
+#  You should have received a copy of the GNU General Public License
+#  along with this program; if not, write to the Free Software
+#  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+#  MA 02110-1301, USA.
+
+from HTMLParser import *
+import requests
+import sys
+
+url = "http://dontpad.com/"
+bool = False
+text = ''
+
+class MyHTMLParser(HTMLParser):
+    def handle_starttag(self,tag,attrs):
+        if tag == "textarea":
+            global bool
+            bool = True
+    def handle_data(self,data):
+        global bool
+        if bool :
+            global text
+            text = data
+            bool = False
+
+def PrintUsage():
+    print  "USAGE:\n\tdpdownloader [http://dontpad.com/][PASTA/]ARQUIVO"
+
+def parseArgs(args):
+    global url
+    if len(args) != 2:
+        PrintUsage()
+        sys.exit(-3)
+    if not url in args[1]:
+        if "http://" in args[1] or "https://" in args[1]:
+                print("Link " + args[1] + " Inválido!")
+                sys.exit(-2)
+        else:
+                url = url + args[1] 
+
+if __name__ =="__main__":
+    parseArgs(sys.argv)
+    r = requests.get(url)
+    myParser = MyHTMLParser()
+    myParser.feed(r.content)
+    if not text.strip() :
+        print "Erro. Link Vazio!"
+        sys.exit(-1) 
+    fileName = url.split('/')[-1]
+    myFile = open(fileName,'w')
+    print "Escrevendo em " + fileName
+    myFile.write(text)
+    myFile.close()
