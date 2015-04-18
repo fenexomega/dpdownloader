@@ -16,7 +16,7 @@ dpdownloader exemplo
 Ou
 	
 ```bash
-		dpdownloader http://dontpad.com/exemplo
+dpdownloader http://dontpad.com/exemplo
 ```
 E o arquivo *exemplo* é salvo com o texto do link na pasta atual.
 
