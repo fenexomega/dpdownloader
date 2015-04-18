@@ -13,7 +13,7 @@ Eu posso fazer:
 ```bash
 dpdownloader exemplo	
 ```	
-Ou
+ou
 	
 ```bash
 dpdownloader http://dontpad.com/exemplo
