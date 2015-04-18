@@ -4,8 +4,8 @@ Utilitário para baixar rapidamente qualquer arquivo de texto do dontpad.com.
 ## Instalação
 Basta digitar no terminal
 ```bash
-make install_libs
-make install
+sudo make install_libs
+sudo make install
 ```
 ## Utilização
 Digamos que eu queria baixar um texto que está em http://dontpad.com/exemplo.
