@@ -18,7 +18,7 @@ ou
 ```bash
 dpdownloader http://dontpad.com/exemplo
 ```
-E o arquivo *exemplo* é salvo com o texto do link na pasta atual.
+e o arquivo *exemplo* é salvo com o texto do link na pasta atual.
 
 E se o arquivo estiver em uma pasta:	
 ```bash
@@ -29,3 +29,7 @@ Assim como
 dpdownloader http://dontpad.com/pasta/exemplo	
 ```
 
+Você também pode baixar vários arquivos de uma só vez:
+```bash
+dpdownloader exemplo1 exemplo2 pasta/exemplo3
+```

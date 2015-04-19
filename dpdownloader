@@ -30,7 +30,7 @@ from HTMLParser import *
 import requests
 import sys
 
-url = "http://dontpad.com/"
+dontPadUrl = "http://dontpad.com/"
 bool = False
 text = ''
 
@@ -50,27 +50,37 @@ def PrintUsage():
     print  "USAGE:\n\tdpdownloader [http://dontpad.com/][PASTA/]ARQUIVO"
 
 def parseArgs(args):
-    global url
-    if len(args) != 2:
+    global dontPadUrl
+    urls = []
+    if len(args) < 2:
         PrintUsage()
         sys.exit(-3)
-    if not url in args[1]:
-        if "http://" in args[1] or "https://" in args[1]:
-                print("Link " + args[1] + " Inválido!")
-                sys.exit(-2)
-        else:
-                url = url + args[1] 
+    for url in args[1:]: 
+        if not dontPadUrl in url:
+            if "http://" in url or "https://" in url:
+                    print("Link " + url + " Inválido!")
+                    sys.exit(-2)
+            else:
+                    url = dontPadUrl + url 
+        urls.append(url)
+    return urls
 
 if __name__ =="__main__":
-    parseArgs(sys.argv)
-    r = requests.get(url)
-    myParser = MyHTMLParser()
-    myParser.feed(r.content)
-    if not text.strip() :
-        print "Erro. Link Vazio!"
-        sys.exit(-1) 
-    fileName = url.split('/')[-1]
-    myFile = open(fileName,'w')
-    print "Escrevendo em " + fileName
-    myFile.write(text)
-    myFile.close()
+    urls = parseArgs(sys.argv)
+    print  "Total de textos: " + str(len(urls))
+    for url in urls:
+        print "Pegando Texto de " + url 
+        r = requests.get(url)
+        myParser = MyHTMLParser()
+        myParser.feed(r.content)
+        if not text.strip() :
+            print "Erro. Link Vazio!"
+            print "Indo para o próximo"
+            continue
+        fileName = url.split('/')[-1]
+        myFile = open(fileName,'w')
+        print "Escrevendo em " + fileName
+        myFile.write(text)
+        myFile.close()
+        print "Feito.\n"
+    sys.exit(0)
