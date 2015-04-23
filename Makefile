@@ -1,5 +1,5 @@
 PIP=pip2
-LIBS=htmlparser requests
+LIBS=requests lxml
 
 install_libs:
 	$(PIP) install $(LIBS)

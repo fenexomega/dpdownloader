@@ -26,7 +26,8 @@
 #  Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 #  MA 02110-1301, USA.
 
-from HTMLParser import *
+#from HTMLParser import *
+import lxml.html 
 import requests
 import sys
 
@@ -34,17 +35,6 @@ dontPadUrl = "http://dontpad.com/"
 bool = False
 text = ''
 
-class MyHTMLParser(HTMLParser):
-    def handle_starttag(self,tag,attrs):
-        if tag == "textarea":
-            global bool
-            bool = True
-    def handle_data(self,data):
-        global bool
-        if bool :
-            global text
-            text = data
-            bool = False
 
 def PrintUsage():
     print  "USAGE:\n\tdpdownloader [http://dontpad.com/][PASTA/]ARQUIVO"
@@ -71,8 +61,8 @@ if __name__ =="__main__":
     for url in urls:
         print "Pegando Texto de " + url 
         r = requests.get(url)
-        myParser = MyHTMLParser()
-        myParser.feed(r.content)
+        text = lxml.html.fromstring(r.content).get_element_by_id(id="text")
+        text = text.text_content() #[1][2][0].tag
         if not text.strip() :
             print "Erro. Link Vazio!"
             print "Indo para o próximo"
