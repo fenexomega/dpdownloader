@@ -70,7 +70,7 @@ if __name__ =="__main__":
         fileName = url.split('/')[-1]
         myFile = open(fileName,'w')
         print "Escrevendo em " + fileName
-        myFile.write(text)
+        myFile.write(text.encode('UTF-8'))
         myFile.close()
         print "Feito.\n"
     sys.exit(0)
